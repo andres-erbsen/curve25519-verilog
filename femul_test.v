@@ -10,7 +10,7 @@ module femul_test;
 
     always #1 clock <= !clock;
     initial begin
-        $monitor("done=%b mul_step=%x reduce_step=%d carry=%x mid[14]=%2d out=%0x", done, femul.multiply_step, femul.reduce_step, femul.carry, femul.mid[14], out);
+        $monitor("done=%b mul_step=%x reduce_step=%d carry=%x mid[14]=%x out=%0x", done, femul.multiply_step, femul.reduce_step, femul.carry, femul.mid[14], out);
         #1 start <= 1;
         #1 start <= 0;
     end

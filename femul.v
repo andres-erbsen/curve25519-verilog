@@ -14,14 +14,13 @@ module femul(input wire clock, start,
     reg [254:0] b = 0;
     reg [2*W + LOGN + LOGC - 1:0] mid [N-1:0];
     reg [LOGN-1:0] multiply_step = N;
-    wire multiply_running = multiply_step < N;
 
     always @ (posedge clock) begin
         if (start) begin
             multiply_step <= 0;
             a <= a_in;
             b <= b_in;
-        end else if (multiply_running) begin
+        end else if (multiply_step < N) begin
             multiply_step <= multiply_step + 1;
             a <= {a, a[254 -: W]}; // XXX: rotation operators <<< and >>> DO NOT WORK?
             b <= {b[0 +: W], b[W +: 255-W]};
@@ -31,12 +30,12 @@ module femul(input wire clock, start,
 
     genvar i; generate for (i = 0; i < N; i = i + 1) begin: mul_mid
         always @(posedge clock) begin
-            if (start) mid[i] <= 0;
-            else if (multiply_running) begin
-                mid[i] <= /* if */ (i < multiply_step)
-                    ? mid[i] + (b[0 +: W] * a[i*W +: W]) * C
-                    : mid[i] + b[0 +: W] * a[i*W +: W];
-            end
+            `define partial (b[0 +: W] * a[i*W +: W])
+            mid[i] <=                multiply_step == 0?          `partial     :
+                i < multiply_step && multiply_step < N ? mid[i] + `partial * C : 
+                                     multiply_step < N ? mid[i] + `partial     :
+                                      /* otherwise */    mid[i]                ;
+            `undef partial
         end
     end endgenerate
 
