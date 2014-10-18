@@ -50,8 +50,8 @@ module femul(input wire clock, start,
         if (reduce_step < N+R) begin
             reduce_step <= reduce_step + 1;
             if (reduce_step >= R) out <= {carry_out, out[254:W]};
-            carry <= reduce_step == 0 ? carry <= mid[N-2] >> W:
-                     reduce_step == 1 ? carry <= ((mid[N-1] + carry) >> W) * C:
+            carry <= reduce_step == 0 ? mid[N-2] >> W:
+                     reduce_step == 1 ? ((mid[N-1] + carry) >> W) * C:
                       /*otherwise*/    (carry + mid[reduce_step-R]) >> W;
         end
         if (reduce_step == N+R-1) done <= 1;
