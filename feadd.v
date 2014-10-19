@@ -34,9 +34,9 @@ module feadd(input wire clock, start,
             out_ <= {partial [W-1:0], out_[254:W]};
             outP <= {partialP[W-1:0], outP[254:W]};
             if (i == N-1) done <= 1;
-            // we only want to use the non-reduced result if the reduction
-            // overflowed and the main operation did not.
-            if (i == N-1) wrapP <= ~(partialP[W] && !partial[W]);
+            // reduce when possible: we only want to use the non-reduced result
+            // if the reduction overflowed and the main operation did not.
+            if (i == N-1) wrapP <= !(!partial[W] && partialP[W]);
         end else if (done) done <= 0;
     end
     assign out = wrapP ? outP : out_;
