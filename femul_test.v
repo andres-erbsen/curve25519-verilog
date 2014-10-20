@@ -25,7 +25,7 @@ module femul_test;
         bs[3]   = 254'hfffffffff - 17;
         outs[3] = 255'h37ffffffffffffffffffffffffffffffffffffffffffffffffff833980008c57;
 
-        as[4]   = 255'h4000000000000000000000000000000000000000000000000000000000000000;
+        as[4]   = 255'b1 << 254;
         bs[4]   = 2;
         outs[4] = 19;
 
@@ -54,5 +54,5 @@ module femul_test;
         if (start) start <= 0;
     end
 
-    initial begin $monitor("done=%b reduce_step=%d carry=%x partial=%x      out=%x (%b)", done, femul.reduce_step, femul.carry, femul.partial, out, femul.wrapP); end
+    initial begin $monitor("carry=%x partial=%x borrow=%x partialP=%x  out=%x (%b)", femul.carry, femul.partial, femul.borrow, femul.partialP, out, femul.wrapP); end
 endmodule
