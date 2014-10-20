@@ -54,5 +54,5 @@ module femul_test;
         if (start) start <= 0;
     end
 
-    // initial begin $monitor("done=%b reduce_step=%d carry=%x partial=%x      out=%x", done, femul.reduce_step, femul.carry, femul.partial, out); end
+    initial begin $monitor("done=%b reduce_step=%d carry=%x partial=%x      out=%x (%b)", done, femul.reduce_step, femul.carry, femul.partial, out, femul.wrapP); end
 endmodule

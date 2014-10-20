@@ -62,7 +62,7 @@ module femul(input wire clock, start,
     always @ (posedge clock) begin
         if (reduce_step < N+R) begin
             reduce_step <= reduce_step + 1;
-            if (reduce_step >= R) out_ <= {partial [W-1:0],  out[254:W]};
+            if (reduce_step >= R) out_ <= {partial [W-1:0], out_[254:W]};
             if (reduce_step >= R) outP <= {partialP[W-1:0], outP[254:W]};
             carry <= carry_next;
             carryP <= carryP_next;
