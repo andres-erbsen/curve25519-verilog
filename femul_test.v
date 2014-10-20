@@ -2,7 +2,7 @@
 `define assert(condition) if(!((|{condition})===1)) begin $display("FAIL"); $finish(1); end
 
 module femul_test;
-    parameter N = 5;
+    parameter N = 6;
     reg [$bits(N):0] i = 0;
     reg [254:0] as [N:0];
     reg [254:0] bs [N:0];
@@ -25,9 +25,13 @@ module femul_test;
         bs[3]   = 254'hfffffffff - 17;
         outs[3] = 255'h37ffffffffffffffffffffffffffffffffffffffffffffffffff833980008c57;
 
-        as[4]   = 255'h6483b328032df78f6abb1342dc54964127be97507e17c1b4cf481339f1fa20de;
-        bs[4]   = 255'hb47d26181c9f63bb1405345faca4ffd0fe748b6652fa7d2decf0e2c865e988d;
-        outs[4] = 255'h7587e6935be3c0628e7fa76da3931343283adb49a03f048998eb0f9b51a209ef;
+        as[4]   = 255'h4000000000000000000000000000000000000000000000000000000000000000;
+        bs[4]   = 2;
+        outs[4] = 19;
+
+        as[5]   = 255'h6483b328032df78f6abb1342dc54964127be97507e17c1b4cf481339f1fa20de;
+        bs[5]   = 255'hb47d26181c9f63bb1405345faca4ffd0fe748b6652fa7d2decf0e2c865e988d;
+        outs[5] = 255'h7587e6935be3c0628e7fa76da3931343283adb49a03f048998eb0f9b51a209ef;
     end
 
     wire [254:0] out;
