@@ -54,5 +54,5 @@ module femul_test;
         if (start) start <= 0;
     end
 
-    initial begin $monitor("carry=%x partial=%x borrow=%x partialP=%x  out=%x (%b)", femul.carry, femul.partial, femul.borrow, femul.partialP, out, femul.wrapP); end
+    // initial begin $monitor("carry=%x partial=%x borrow=%x partialP=%x  out=%x (%b)", femul.carry, femul.partial, femul.borrow, femul.partialP, out, femul.wrapP); end
 endmodule
