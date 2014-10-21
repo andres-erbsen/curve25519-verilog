@@ -2,7 +2,7 @@ test: tests.out
 	@cat tests.out && ! grep -q FAIL tests.out
 
 TESTS := feadd_test.out feexp_test.out femul_test.out fesub_test.out
-feexp.vvp: feexp.v femul.v
+feexp_test.vvp: feexp.v femul.v feexp_test.v
 
 .PRECIOUS: $(TESTS:%.out=%.vvp)
 
