@@ -11,6 +11,10 @@ module femul(input wire clock, start,
     parameter LOGC = 4;
     parameter LOGN = 4;
 
+    function [2*W+LOGN+LOGC-1:0] mult19 (input [2*W+LOGN-1:0] a);
+        assign mult19 = a + (a<<1) + (a<<4);
+    endfunction
+
     reg [254:0] a = 0;
     reg [254:0] b = 0;
     reg [2*W + LOGN + LOGC - 1:0] mid [N-1:0];
@@ -35,7 +39,7 @@ module femul(input wire clock, start,
             if (multiply_step == 0) mid[j] <= partialProduct;
             else if (multiply_step < N) begin
                 if (j < multiply_step) begin
-                    mid[j] <= mid[j] + partialProduct * C;
+                    mid[j] <= mid[j] + mult19(partialProduct);
                 end else begin
                     mid[j] <= mid[j] + partialProduct;
                 end
@@ -49,7 +53,7 @@ module femul(input wire clock, start,
     always @ (posedge clock) begin
         if (prereduce) begin
             carryIgnore <= preCarry;
-            carry <= preCarry * C;
+            carry <= mult19(preCarry);
             prereduce <= 0;
             reduce_step <= 0;
             borrow <= 0;
