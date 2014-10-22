@@ -3,7 +3,7 @@
 
 module femul_test;
     parameter N = 6;
-    reg [$bits(N):0] i = 0;
+    reg [$bits(N):0] in_i = 0, out_i = 0;
     reg [254:0] as [N:0];
     reg [254:0] bs [N:0];
     reg [254:0] outs [N:0];
@@ -35,24 +35,24 @@ module femul_test;
     end
 
     wire [254:0] out;
-    wire done;
-    reg clock = 0, start = 1;
-    femul femul(clock, start, as[i], bs[i], done, out);
+    wire ready, done;
+    reg clock = 0, start = 0;
+    femul femul(clock, start, as[in_i], bs[in_i], ready, done, out);
     always #1 clock <= !clock;
 
     always @(posedge clock) begin
-        if (done) begin
-            $display("(0x%x * 0x%x)%%((1<<255)-19) == 0x%x", as[i], bs[i], out);
-            `assert(out === outs[i])
-            if (i < N-1) begin
-                i <= i + 1;
-                start <= 1;
-            end else begin
-                $finish;
-            end
+        if (ready && in_i < N) start <= 1;
+        if (start) begin
+            start <= 0;
+            in_i <= in_i + 1;
         end
-        if (start) start <= 0;
+        if (done) begin
+            $display("(0x%x * 0x%x)%%((1<<255)-19) == 0x%x", as[out_i], bs[out_i], out);
+            `assert(out === outs[out_i])
+            if (out_i == N-1) begin $display("%0d/%0d cycles/femul", $time/2, N); $finish; end
+            else out_i <= out_i + 1;
+        end
     end
-
-    // initial begin $monitor("carry=%x partial=%x borrow=%x partialP=%x  out=%x (%b)", femul.carry, femul.partial, femul.borrow, femul.partialP, out, femul.wrapP); end
+   // initial begin $monitor("i=%d o=%d ready=%b start=%b done=%b", in_i, out_i, ready, start, done); end
+   // initial begin $monitor("carry=%x partial=%x borrow=%x partialP=%x  out=%x (%b)", femul.carry, femul.partialSum, femul.borrow, femul.partialSumP, out, femul.wrapP); end
 endmodule
