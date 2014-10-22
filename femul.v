@@ -27,7 +27,7 @@ module femul(input wire clock, start,
             b <= b_in;
         end else if (multiply_step < N) begin
             multiply_step <= multiply_step + 1;
-            a <= {a[0 +: N*W-W], a[254 -: W]}; // XXX: rotation operators <<< and >>> DO NOT WORK?
+            a <= {a[0 +: N*W-W], a[254 -: W]};
             b <= {b[0 +: W], b[W +: 255-W]};
             if (multiply_step == N-1) prereduce <= 1;
         end
@@ -36,13 +36,10 @@ module femul(input wire clock, start,
     genvar j; generate for (j = 0; j < N; j = j + 1) begin: mul_mid
         wire [2*W-1:0] partialProduct = b[0 +: W] * a[j*W +: W];
         always @(posedge clock) begin
-            if (multiply_step == 0) mid[j] <= partialProduct;
-            else if (multiply_step < N) begin
-                if (j < multiply_step) begin
-                    mid[j] <= mid[j] + mult19(partialProduct);
-                end else begin
-                    mid[j] <= mid[j] + partialProduct;
-                end
+            if (multiply_step < N) begin
+                if     (multiply_step == 0) mid[j] <= partialProduct;
+                else if (j < multiply_step) mid[j] <= mid[j] + mult19(partialProduct);
+                else                        mid[j] <= mid[j] + partialProduct;
             end
         end
     end endgenerate
