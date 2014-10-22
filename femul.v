@@ -17,8 +17,9 @@ module femul(input wire clock, start,
 
     reg [254:0] a = 0;
     reg [254:0] b = 0;
-    reg [2*W + LOGN + LOGC - 1:0] mid [N-1:0];
-    reg [LOGN-1:0] multiply_step = N;
+    reg [2*W-1:0] partialProduct [N-1:0];
+    reg [2*W + LOGN + LOGC - 1:0] acc [N-1:0];
+    reg [LOGN-1:0] multiply_step = N, accumulate_step = N;
 
     always @ (posedge clock) begin
         if (start) begin
@@ -26,27 +27,31 @@ module femul(input wire clock, start,
             a <= a_in;
             b <= b_in;
         end else if (multiply_step < N) begin
+            if (multiply_step == 0) accumulate_step <= 0;
             multiply_step <= multiply_step + 1;
             a <= {a[0 +: N*W-W], a[254 -: W]};
             b <= {b[0 +: W], b[W +: 255-W]};
-            if (multiply_step == N-1) prereduce <= 1;
+        end
+        if (accumulate_step < N) begin
+            accumulate_step <= accumulate_step + 1;
+            if (accumulate_step == N-1) prereduce <= 1;
         end
     end
 
     genvar j; generate for (j = 0; j < N; j = j + 1) begin: mul_mid
-        wire [2*W-1:0] partialProduct = b[0 +: W] * a[j*W +: W];
         always @(posedge clock) begin
-            if (multiply_step < N) begin
-                if     (multiply_step == 0) mid[j] <= partialProduct;
-                else if (j < multiply_step) mid[j] <= mid[j] + mult19(partialProduct);
-                else                        mid[j] <= mid[j] + partialProduct;
+            if (multiply_step < N) partialProduct[j] <= b[0 +: W] * a[j*W +: W];
+            if (accumulate_step < N) begin
+                if     (accumulate_step == 0) acc[j] <= partialProduct[j];
+                else if (j < accumulate_step) acc[j] <= acc[j] + mult19(partialProduct[j]);
+                else                          acc[j] <= acc[j] + partialProduct[j];
             end
         end
     end endgenerate
 
     reg prereduce = 0;
     reg [2*W + LOGN + LOGC - 1:0] carry = 0, carryIgnore = 0;
-    wire [2*W + LOGN + LOGC -1:0] preCarry = ((mid[N-2] >> W) + mid[N-1]) >> W;
+    wire [2*W + LOGN + LOGC -1:0] preCarry = ((acc[N-2] >> W) + acc[N-1]) >> W;
     always @ (posedge clock) begin
         if (prereduce) begin
             carryIgnore <= preCarry;
@@ -60,7 +65,7 @@ module femul(input wire clock, start,
     reg [LOGN-1:0] reduce_step = N;
     reg [254:0] out_, outP; // two options for the output: r, and r-P
     reg wrapP = 0, borrow = 0;
-    wire [2*W + LOGN + LOGC - 1:0] partial = carry + mid[reduce_step];
+    wire [2*W + LOGN + LOGC - 1:0] partial = carry + acc[reduce_step];
     wire [W:0 ]partialP = partial[W-1:0] - P[reduce_step*W +: W] - borrow;
     always @ (posedge clock) begin
         if (reduce_step < N) begin
