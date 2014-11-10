@@ -6,13 +6,11 @@ A_MINUS_TWO_OVER_FOUR = 121665
 BASE = bytes([9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
 def curve25519_mult(n, q):
-    mx, mz = q, 1
     sx, sz = 1, 0
-    psx, pmx = 0, 0
+    mx, mz = q, 1
 
     # prepare first round
     psx = sx
-    sx = (sx + sz) % P
     pmx = mx
     mx = (mx + mz) % P
 
@@ -22,47 +20,60 @@ def curve25519_mult(n, q):
 
         # stage 1
         psx, sx, sz = sx, sx * sx % P, (psx - sz) % P
+        # stage 1.5
+        pipeline_sz = sz * sz % P
+
 
         # stage 2
+        pipeline_mx = mx * sz % P
         psz = sz
-        sz = sz * sz % P
+        mz = (pmx - mz) % P
+        sz = sz * sz % P; assert(sz == pipeline_sz)
 
         # stage 3
-        mx = mx * psz % P
-        mz = (pmx - mz) % P
+        pipeline_mz = mz * psx % P
+        mx = mx * psz % P; assert(mx == pipeline_mx)
 
         # stage 4
+        pipeline_sx = sx * sz % P
         psz = sz
         sz = (sx - sz) % P
-        mz = mz * psx % P
+        mz = mz * psx % P; assert(pipeline_mz == mz)
 
         # stage 5
-        psx = sx
-        sx = sx * psz % P
+        pipeline_sz = sz * A_MINUS_TWO_OVER_FOUR % P
         pmx = mx
         mx = (mx + mz) % P
+        psx = sx
+        sx = sx * psz % P; assert(pipeline_sx == sx) % P
 
         # stage 6
+        pipeline_mx = mx * mx % P
         psz = sz
-        sz = sz * A_MINUS_TWO_OVER_FOUR % P
         mz = (mz - pmx) % P
+        sz = sz * A_MINUS_TWO_OVER_FOUR % P; assert(pipeline_sz == sz)
 
         # stage 7
+        pipeline_mz = mz * mz % P
         sz = (sz + psx) % P
-        mx = mx * mx % P
+        mx = mx * mx % P; assert(pipeline_mx == mx)
 
         # stage 8
-        sz = sz * psz % P
+        pipeline_sz = sz * psz % P
+        mz = mz * mz % P; assert(pipeline_mz == mz)
 
         # stage 9
-        mz = mz * mz % P
+        pipeline_mz = mz * q % P
+        sz = sz * psz % P; assert(pipeline_sz == sz)
         # prrepare next round
         psx = sx
         sx = (sx + sz) % P
 
         # stage 10
-        mz = mz * q % P
-        # prrepare next round
+        mz = mz * q % P; assert(pipeline_mz == mz)
+
+        # stage 11
+        # prepare next round
         pmx = mx
         mx = (mx + mz) % P
 
