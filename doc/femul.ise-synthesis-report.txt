@@ -1,0 +1,589 @@
+Release 10.1.03 - xst K.39 (lin64)
+Copyright (c) 1995-2008 Xilinx, Inc.  All rights reserved.
+--> 
+Parameter TMPDIR set to /afs/athena.mit.edu/user/a/n/andreser/curve25519-verilog/ise/xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.06 secs
+ 
+--> 
+Parameter xsthdpdir set to /afs/athena.mit.edu/user/a/n/andreser/curve25519-verilog/ise/xst
+
+
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.06 secs
+ 
+--> 
+Reading design: femul.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+     9.1) Device utilization summary
+     9.2) Partition Resource Summary
+     9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "femul.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "femul"
+Output Format                      : NGC
+Target Device                      : xc2v6000-4-bf957
+
+---- Source Options
+Top Module Name                    : femul
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : lut
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : YES
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : YES
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Multiplier Style                   : auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 16
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Convert Tristates To Logic         : Yes
+Use Clock Enable                   : Yes
+Use Synchronous Set                : Yes
+Use Synchronous Reset              : Yes
+Pack IO Registers into IOBs        : auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Library Search Order               : femul.lso
+Keep Hierarchy                     : NO
+Netlist Hierarchy                  : as_optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling verilog file "../femul.v" in library work
+Module <femul> compiled
+No errors in compilation
+Analysis of file <"femul.prj"> succeeded.
+ 
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for module <femul> in library <work> with parameters.
+	C = "00000000000000000000000000010011"
+	LOGC = "00000000000000000000000000000100"
+	LOGN = "00000000000000000000000000000100"
+	N = "00000000000000000000000000001111"
+	P = "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111101101"
+	W = "00000000000000000000000000010001"
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing top module <femul>.
+	C = 32'sb00000000000000000000000000010011
+	LOGC = 32'sb00000000000000000000000000000100
+	LOGN = 32'sb00000000000000000000000000000100
+	N = 32'sb00000000000000000000000000001111
+	P = 255'b111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111101101
+	W = 32'sb00000000000000000000000000010001
+WARNING:Xst:790 - "../femul.v" line 26: Index value(s) does not match array range, simulation mismatch.
+Module <femul> is correct for synthesis.
+ 
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <femul>.
+    Related source file is "../femul.v".
+    Found 1-bit register for signal <done>.
+    Found 42-bit 15-to-1 multiplexer for signal <$varindex0000> created at line 25.
+    Found 255-bit register for signal <a>.
+    Found 255-bit register for signal <b>.
+    Found 1-bit register for signal <borrow>.
+    Found 42-bit register for signal <carry>.
+    Found 42-bit adder for signal <carry$addsub0000> created at line 41.
+    Found 42-bit adder for signal <carry$addsub0001> created at line 41.
+    Found 42-bit register for signal <carryIgnore>.
+    Found 630-bit register for signal <mid>.
+    Found 42-bit adder for signal <mid_0$addsub0000>.
+    Found 42-bit adder for signal <mid_0$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_0$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_0$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_1$addsub0000>.
+    Found 42-bit adder for signal <mid_1$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_1$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_1$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_10$addsub0000>.
+    Found 42-bit adder for signal <mid_10$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_10$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_10$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_11$addsub0000>.
+    Found 42-bit adder for signal <mid_11$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_11$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_11$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_12$addsub0000>.
+    Found 42-bit adder for signal <mid_12$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_12$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_12$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_13$addsub0000>.
+    Found 42-bit adder for signal <mid_13$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_13$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_13$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_14$addsub0000>.
+    Found 42-bit adder for signal <mid_14$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_14$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_14$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_2$addsub0000>.
+    Found 42-bit adder for signal <mid_2$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_2$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_2$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_3$addsub0000>.
+    Found 42-bit adder for signal <mid_3$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_3$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_3$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_4$addsub0000>.
+    Found 42-bit adder for signal <mid_4$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_4$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_4$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_5$addsub0000>.
+    Found 42-bit adder for signal <mid_5$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_5$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_5$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_6$addsub0000>.
+    Found 42-bit adder for signal <mid_6$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_6$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_6$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_7$addsub0000>.
+    Found 42-bit adder for signal <mid_7$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_7$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_7$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_8$addsub0000>.
+    Found 42-bit adder for signal <mid_8$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_8$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_8$cmp_lt0000> created at line 65.
+    Found 42-bit adder for signal <mid_9$addsub0000>.
+    Found 42-bit adder for signal <mid_9$addsub0001> created at line 66.
+    Found 42-bit adder for signal <mid_9$addsub0002> created at line 66.
+    Found 4-bit comparator greater for signal <mid_9$cmp_lt0000> created at line 65.
+    Found 17x17-bit multiplier for signal <mul_mid[0].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[10].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[11].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[12].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[13].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[14].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[1].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[2].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[3].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[4].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[5].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[6].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[7].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[8].partialProduct>.
+    Found 17x17-bit multiplier for signal <mul_mid[9].partialProduct>.
+    Found 4-bit up counter for signal <multiply_step>.
+    Found 5-bit comparator less for signal <multiply_step$cmp_lt0000> created at line 33.
+    Found 255-bit register for signal <out_>.
+    Found 255-bit register for signal <outP>.
+    Found 42-bit adder for signal <partial>.
+    Found 18-bit subtractor for signal <partialP>.
+    Found 18-bit subtractor for signal <partialP$addsub0000> created at line 26.
+    Found 4x6-bit multiplier for signal <partialP$mult0000> created at line 26.
+    Found 42-bit adder for signal <preCarry$add0000> created at line 27.
+    Found 1-bit register for signal <prereduce>.
+    Found 5-bit comparator greatequal for signal <prereduce$cmp_ge0000> created at line 33.
+    Found 4-bit up counter for signal <reduce_step>.
+    Found 5-bit comparator less for signal <reduce_step$cmp_lt0000> created at line 46.
+    Found 1-bit register for signal <wrapP>.
+    Found 42-bit comparator greater for signal <wrapP$cmp_gt0000> created at line 55.
+INFO:Xst:738 - HDL ADVISOR - 630 flip-flops were inferred for signal <mid>. You may be trying to describe a RAM in a way that is incompatible with block and distributed RAM resources available on Xilinx devices, or with a specific template that is not supported. Please review the Xilinx resources documentation and the XST user manual for coding guidelines. Taking advantage of RAM resources will lead to improved device usage and reduced synthesis time.
+    Summary:
+	inferred   2 Counter(s).
+	inferred 1738 D-type flip-flop(s).
+	inferred  51 Adder/Subtractor(s).
+	inferred  16 Multiplier(s).
+	inferred  19 Comparator(s).
+	inferred  42 Multiplexer(s).
+Unit <femul> synthesized.
+
+INFO:Xst:1767 - HDL ADVISOR - Resource sharing has identified that some arithmetic operations in this design can share the same physical resources for reduced device utilization. For improved clock frequency you may try to disable resource sharing.
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Multipliers                                          : 16
+ 17x17-bit multiplier                                  : 15
+ 4x6-bit multiplier                                    : 1
+# Adders/Subtractors                                   : 51
+ 18-bit subtractor                                     : 2
+ 42-bit adder                                          : 49
+# Counters                                             : 2
+ 4-bit up counter                                      : 2
+# Registers                                            : 25
+ 1-bit register                                        : 4
+ 255-bit register                                      : 4
+ 42-bit register                                       : 17
+# Comparators                                          : 19
+ 4-bit comparator greater                              : 15
+ 42-bit comparator greater                             : 1
+ 5-bit comparator greatequal                           : 1
+ 5-bit comparator less                                 : 2
+# Multiplexers                                         : 1
+ 42-bit 15-to-1 multiplexer                            : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+Loading device for application Rf_Device from file '2v6000.nph' in environment /afs/csail.mit.edu/proj/redsocs/Xilinx10.1/ISE.
+
+Synthesizing (advanced) Unit <femul>.
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_partialP_mult0000 by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[0].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[1].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[2].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[3].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[5].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[4].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[6].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[7].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[8].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[9].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[10].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[12].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[11].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[13].partialProduct by adding 1 register level(s).
+INFO:Xst:2385 - HDL ADVISOR - You can improve the performance of the multiplier Mmult_mul_mid[14].partialProduct by adding 1 register level(s).
+Unit <femul> synthesized (advanced).
+WARNING:Xst:1293 - FF/Latch <carryIgnore_41> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_40> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_39> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_38> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_37> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_36> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_35> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_34> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_33> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_32> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_31> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_30> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_29> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_28> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_27> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_26> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carryIgnore_25> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Multipliers                                          : 16
+ 17x17-bit multiplier                                  : 15
+ 4x6-bit multiplier                                    : 1
+# Adders/Subtractors                                   : 50
+ 18-bit subtractor borrow in                           : 1
+ 42-bit adder                                          : 49
+# Counters                                             : 2
+ 4-bit up counter                                      : 2
+# Registers                                            : 1721
+ Flip-Flops                                            : 1721
+# Comparators                                          : 19
+ 4-bit comparator greater                              : 15
+ 42-bit comparator greater                             : 1
+ 5-bit comparator greatequal                           : 1
+ 5-bit comparator less                                 : 2
+# Multiplexers                                         : 1
+ 42-bit 15-to-1 multiplexer                            : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:1293 - FF/Latch <carry_30> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_31> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_32> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_33> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_34> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_35> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_36> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_37> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_38> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_39> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_40> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1896 - Due to other FF/Latch trimming, FF/Latch <carry_41> has a constant value of 0 in block <femul>. This FF/Latch will be trimmed during the optimization process.
+
+Optimizing unit <femul> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block femul, actual ratio is 8.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 1717
+ Flip-Flops                                            : 1717
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                             *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : femul.ngr
+Top Level Output File Name         : femul
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : NO
+
+Design Statistics
+# IOs                              : 768
+
+Cell Usage :
+# BELS                             : 7634
+#      BUF                         : 1
+#      GND                         : 1
+#      INV                         : 4
+#      LUT1                        : 162
+#      LUT2                        : 249
+#      LUT3                        : 2910
+#      LUT4                        : 1136
+#      MULT_AND                    : 123
+#      MUXCY                       : 1381
+#      MUXF5                       : 168
+#      MUXF6                       : 84
+#      MUXF7                       : 42
+#      VCC                         : 1
+#      XORCY                       : 1372
+# FlipFlops/Latches                : 1717
+#      FDE                         : 1707
+#      FDR                         : 1
+#      FDRE                        : 9
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 767
+#      IBUF                        : 511
+#      OBUF                        : 256
+# MULTs                            : 15
+#      MULT18X18                   : 15
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 2v6000bf957-4 
+
+ Number of Slices:                     2430  out of  33792     7%  
+ Number of Slice Flip Flops:           1717  out of  67584     2%  
+ Number of 4 input LUTs:               4461  out of  67584     6%  
+ Number of IOs:                         768
+ Number of bonded IOBs:                 768  out of    684   112% (*) 
+ Number of MULT18X18s:                   15  out of    144    10%  
+ Number of GCLKs:                         1  out of     16     6%  
+
+WARNING:Xst:1336 -  (*) More than 100% of Device resources are used
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+clock                              | BUFGP                  | 1717  |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -4
+
+   Minimum period: 19.415ns (Maximum Frequency: 51.505MHz)
+   Minimum input arrival time before clock: 5.846ns
+   Maximum output required time after clock: 7.836ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'clock'
+  Clock period: 19.415ns (frequency: 51.505MHz)
+  Total number of paths / destination ports: 22265976 / 3437
+-------------------------------------------------------------------------
+Delay:               19.415ns (Levels of Logic = 15)
+  Source:            b_16 (FF)
+  Destination:       mid_2_41 (FF)
+  Source Clock:      clock rising
+  Destination Clock: clock rising
+
+  Data Path: b_16 to mid_2_41
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q             16   0.568   1.000  b_16 (b_16)
+     MULT18X18:A16->P31    9   9.528   0.897  Mmult_mul_mid[0].partialProduct (mid_0_mux0001<35>_mand)
+     LUT3:I2->O            1   0.439   0.557  Madd_mid_0_addsub0002C311_SW1 (N1042)
+     LUT4:I3->O            1   0.439   0.000  Madd_mid_0_addsub0002_Madd_lut<33> (Madd_mid_0_addsub0002_Madd_lut<33>)
+     MUXCY:S->O            1   0.298   0.000  Madd_mid_0_addsub0002_Madd_cy<33> (Madd_mid_0_addsub0002_Madd_cy<33>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<34> (Madd_mid_0_addsub0002_Madd_cy<34>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<35> (Madd_mid_0_addsub0002_Madd_cy<35>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<36> (Madd_mid_0_addsub0002_Madd_cy<36>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<37> (Madd_mid_0_addsub0002_Madd_cy<37>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<38> (Madd_mid_0_addsub0002_Madd_cy<38>)
+     MUXCY:CI->O           1   0.053   0.000  Madd_mid_0_addsub0002_Madd_cy<39> (Madd_mid_0_addsub0002_Madd_cy<39>)
+     XORCY:CI->O           1   1.274   0.552  Madd_mid_0_addsub0002_Madd_xor<40> (mid_0_addsub0002<40>)
+     LUT3:I2->O            1   0.439   0.000  mid_0_mux0002<40>1 (mid_0_mux0002<40>)
+     MUXCY:S->O            0   0.298   0.000  Madd_mid_0_addsub0000_cy<40> (Madd_mid_0_addsub0000_cy<40>)
+     XORCY:CI->O           1   1.274   0.725  Madd_mid_0_addsub0000_xor<41> (mid_0_addsub0000<41>)
+     LUT2:I1->O            1   0.439   0.000  mid_0_mux0000<41>1 (mid_0_mux0000<41>)
+     FDE:D                     0.370          mid_0_41
+    ----------------------------------------
+    Total                     19.415ns (15.684ns logic, 3.731ns route)
+                                       (80.8% logic, 19.2% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clock'
+  Total number of paths / destination ports: 1535 / 1025
+-------------------------------------------------------------------------
+Offset:              5.846ns (Levels of Logic = 3)
+  Source:            start (PAD)
+  Destination:       prereduce (FF)
+  Destination Clock: clock rising
+
+  Data Path: start to prereduce
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O           259   0.825   1.676  start_IBUF (start_IBUF)
+     BUF:I->O            259   0.439   1.710  start_IBUF_1 (start_IBUF_1)
+     LUT4:I2->O            1   0.439   0.517  prereduce_not00011 (prereduce_not0001)
+     FDRE:CE                   0.240          prereduce
+    ----------------------------------------
+    Total                      5.846ns (1.943ns logic, 3.903ns route)
+                                       (33.2% logic, 66.8% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clock'
+  Total number of paths / destination ports: 766 / 256
+-------------------------------------------------------------------------
+Offset:              7.836ns (Levels of Logic = 2)
+  Source:            wrapP (FF)
+  Destination:       out<254> (PAD)
+  Source Clock:      clock rising
+
+  Data Path: wrapP to out<254>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q            255   0.568   1.950  wrapP (wrapP)
+     LUT3:I0->O            1   0.439   0.517  out<9>1 (out_9_OBUF)
+     OBUF:I->O                 4.361          out_9_OBUF (out<9>)
+    ----------------------------------------
+    Total                      7.836ns (5.368ns logic, 2.468ns route)
+                                       (68.5% logic, 31.5% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 53.00 secs
+Total CPU time to Xst completion: 51.80 secs
+ 
+--> 
+
+
+Total memory usage is 590916 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :   31 (   0 filtered)
+Number of infos    :   18 (   0 filtered)
+

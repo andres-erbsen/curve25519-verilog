@@ -1,0 +1,36 @@
+Release 10.1.03 ngdbuild K.39 (lin64)
+Copyright (c) 1995-2008 Xilinx, Inc.  All rights reserved.
+
+Command Line:
+/afs/csail.mit.edu/proj/redsocs/Xilinx10.1/ISE/bin/lin64/unwrapped/ngdbuild -ise
+/afs/athena.mit.edu/user/a/n/andreser/curve25519-verilog/ise/curve25519.ise
+-intstyle ise -dd _ngo -nt timestamp -i -p xc2v6000-bf957-4 femul.ngc femul.ngd
+
+Reading NGO file
+"/afs/athena.mit.edu/user/a/n/andreser/curve25519-verilog/ise/femul.ngc" ...
+Gathering constraint information from source properties...
+Done.
+
+Resolving constraint associations...
+Checking Constraint Associations...
+Done...
+Checking Partitions ...
+
+Checking expanded design ...
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+NGDBUILD Design Results Summary:
+  Number of errors:     0
+  Number of warnings:   0
+
+Total memory usage is 236736 kilobytes
+
+Writing NGD file "femul.ngd" ...
+
+Writing NGDBUILD log file "femul.bld"...
