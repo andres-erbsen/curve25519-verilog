@@ -77,14 +77,6 @@ def curve25519_mult(n, q):
         pmx = mx
         mx = (mx + mz) % P
 
-        print("assert( sx == 0x%32x)"%  sx);
-        print("assert( sz == 0x%32x)"%  sz);
-        print("assert( mx == 0x%32x)"%  mx);
-        print("assert( mz == 0x%32x)"%  mz);
-        print("assert(psx == 0x%32x)"% psx);
-        print("assert(psz == 0x%32x)"% psz);
-        print("assert(pmx == 0x%32x)"% pmx);
-
     # lowest bit of the scalar is always 0, so no need to swap back
     return psx * pow(sz, P-2, P) % P
 

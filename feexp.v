@@ -12,16 +12,22 @@ module feexp(input wire clock, start,
         .a_in(out), .b_in(square ? out : x), .done(mult_done), .out(mult_out));
     always @(posedge clock) begin
         if (start) begin
-            i <= 255;
+            i <= 254;
             out <= 1;
             square <= 0;
-            mult_start <= 1;
-        end else if (mult_done) begin
-            if (square || e[i]) out <= mult_out;
-            if (i == 0 && !square) done <= 1;
-            else if (!square) i <= i-1;
-            square <= !square;
-            if (i != 0 || square) mult_start <= 1;
+            mult_start <= 1; // out * x
+        end else if (mult_done &&  square) begin
+            $display("%x", mult_out);
+            square <= 0;
+            out <= mult_out;
+            mult_start <= 1; // out * x
+        end else if (mult_done && !square) begin
+            square <= 1;
+            if (e[i]) out <= mult_out;
+            if (i != 0) begin 
+                i <= i-1;
+                mult_start <= 1; // out * out
+            end else done <= 1;
         end
         if (done) done <= 0;
         if (mult_start) mult_start <= 0;

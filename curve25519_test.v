@@ -23,6 +23,7 @@ module curve25519_test;
     always @(posedge clock) begin
         // $display("%3d %x-%0d-%x: %d %d", $time/2, c.state, c.i, c.stage, c.sub_done, c.mul_ready);
         if (done) begin
+            // $display("0x%x == 0x%x", out, outs[i]);
             `assert(out === outs[i])
             if (i < N-1) begin
                 i <= i + 1;

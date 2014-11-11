@@ -8,13 +8,13 @@ module curve25519(input wire clock, start,
                   input wire [254:0] n, // scalar
                   input wire [254:0] q, // point
                   output reg done = 0,
-                  output reg [254:0] out);
+                  output wire [254:0] out);
     reg [254:0] r[0:6];
     localparam PSX=0, SX=1, SZ=2, MX=3, MZ=4, PMX=5, PSZ=6;
-    localparam A_MINUS_FOUR_OVER_TWO=7, Q=8;
-    wire [254:0] mul_snd = mul2 == 8 ? q:
-                           mul2 == 7 ? 121665:
-                                       r[mul2];
+    localparam A_MINUS_FOUR_OVER_TWO=7, Q=8, OUT=6 /* aliases PSZ */;
+    localparam P_MINUS_TWO = (256'b1<<255) - 21;
+    assign out = r[OUT];
+    wire [254:0] mul_snd = mul2 == 8 ? q : mul2 == 7 ? 121665 : r[mul2];
     reg add_start=0, sub_start=0, mul_start=0;
     reg [$bits(Q):0] add1=0, add2=0, mul1=0, mul2=0;
     wire add_done, sub_done, mul_ready, mul_done;
@@ -23,10 +23,10 @@ module curve25519(input wire clock, start,
     fesub fesub(clock, sub_start, r[add1], r[add2], sub_done, sub_out);
     femul femul(clock, mul_start, r[mul1], mul_snd, mul_ready, mul_done, mul_out);
 
-    reg [1:0] state = 3; localparam PREPARE=0, MAINLOOP=1, REDUCE=2, IDLE=3;
+    reg [1:0] state = 3; localparam PREPARE=0, MAINLOOP=1, INVERT=2, FINAL=3;
     reg [7:0] i = 254; // mainloop: iteration number / index into n [254..0]
     reg [3:0] stage = 0; // mainloop: process counter in iteration
-    reg prev_bit = 0;
+    reg inv_square = 0;
 
     always @(posedge clock) begin
         if (start) begin
@@ -45,7 +45,6 @@ module curve25519(input wire clock, start,
         if (state == PREPARE && add_done) begin
             state <= MAINLOOP;
             i <= 254;
-            prev_bit <= 0;
             stage <= 1;
             // start stage1
             if (n[254]) begin
@@ -130,45 +129,48 @@ module curve25519(input wire clock, start,
             stage <= 11;
         end
         if (state == MAINLOOP && stage == 11 && add_done) begin
-            r[PMX] <= r[MX];
-            r[ MX] <= add_out;
-            stage <= 12; // FIXME: wrap
+            if (i != 0) begin
+                stage <= 1;
+                sub_start <= 1; add1 <= PSX; add2 <= SZ;
+                mul_start <= 1; mul1 <=  SX; mul2 <= SX;
+                i <= i-1;
+                if (n[i] == n[i-1]) begin
+                    r[PMX] <= r[MX];
+                    r[ MX] <= add_out;
+                end else begin
+                    {r[PSX], r[SX],  r[SZ], r[PMX], r[MX], r[MZ]} <= 
+                    {r[MX], add_out, r[MZ], r[PSX], r[SX], r[SZ]};
+                end
+            end else begin
+                state <= INVERT;
+                i <= 254;
+                r[OUT] <= 1;
+                inv_square <= 0;
+                mul_start <= 1; mul1 <= OUT; mul2 <= SZ;
+            end
         end
-        if (stage == 12) begin
-                $display("\n");
-                $display("assert( sx == 0x%x)", r[ SX]);
-                $display("assert( sz == 0x%x)", r[ SZ]);
-                $display("assert( mx == 0x%x)", r[ MX]);
-                $display("assert( mz == 0x%x)", r[ MZ]);
-                $display("assert(psx == 0x%x)", r[PSX]);
-                $display("assert(psz == 0x%x)", r[PSZ]);
-                $display("assert(pmx == 0x%x)", r[PMX]);
+        if (state == INVERT && mul_done &&  inv_square) begin
+            inv_square <= 0;
+            r[OUT] <= mul_out;
+            mul_start <= 1; mul1 <= OUT; mul2 <= SZ;
+        end
+        if (state == INVERT && mul_done && !inv_square) begin
+            inv_square <= 1;
+            if (P_MINUS_TWO[i]) r[OUT] <= mul_out;
+            if (i != 0) begin
+                i <= i-1;
+                mul_start <= 1; mul1 <= OUT; mul2 <= OUT;
+            end else begin
+                state <= FINAL;
+                mul_start <= 1; mul1 <= PSX; mul2 <= OUT;
+            end
+        end
+        if (state == FINAL && mul_done) begin
+            r[OUT] <= mul_out;
             done <= 1;
         end
         if (add_start) add_start <= 0;
         if (sub_start) sub_start <= 0;
         if (mul_start) mul_start <= 0;
     end
-
-    /*
-    reg square = 0, mult_start = 0;
-    wire mult_done;
-    wire [254:0] mult_out;
-    always @(posedge clock) begin
-        if (start) begin
-            i <= 255;
-            out <= 1;
-            square <= 0;
-            mult_start <= 1;
-        end else if (mult_done) begin
-            if (square || e[i]) out <= mult_out;
-            if (i == 0 && !square) done <= 1;
-            else if (!square) i <= i-1;
-            square <= !square;
-            if (i != 0 || square) mult_start <= 1;
-        end
-        if (done) done <= 0;
-        if (mult_start) mult_start <= 0;
-    end
-    */
 endmodule
