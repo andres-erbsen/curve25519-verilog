@@ -25,6 +25,7 @@ module curve25519_test;
         if (done) begin
             // $display("0x%x == 0x%x", out, outs[i]);
             `assert(out === outs[i])
+            if (i==0) $display("%d cycles / curve25519", $time/2);
             if (i < N-1) begin
                 i <= i + 1;
                 start <= 1;
