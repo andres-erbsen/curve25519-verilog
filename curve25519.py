@@ -12,6 +12,7 @@ def curve25519_mult(n, q):
     # prepare first round
     psx = sx
     pmx = mx
+
     mx = (mx + mz) % P
 
     for i in range(254, -1, -1):
@@ -22,7 +23,6 @@ def curve25519_mult(n, q):
         psx, sx, sz = sx, sx * sx % P, (psx - sz) % P
         # stage 1.5
         pipeline_sz = sz * sz % P
-
 
         # stage 2
         pipeline_mx = mx * sz % P
@@ -67,15 +67,23 @@ def curve25519_mult(n, q):
         sz = sz * psz % P; assert(pipeline_sz == sz)
         # prrepare next round
         psx = sx
-        sx = (sx + sz) % P
 
         # stage 10
         mz = mz * q % P; assert(pipeline_mz == mz)
+        sx = (sx + sz) % P
 
         # stage 11
         # prepare next round
         pmx = mx
         mx = (mx + mz) % P
+
+        print("assert( sx == 0x%32x)"%  sx);
+        print("assert( sz == 0x%32x)"%  sz);
+        print("assert( mx == 0x%32x)"%  mx);
+        print("assert( mz == 0x%32x)"%  mz);
+        print("assert(psx == 0x%32x)"% psx);
+        print("assert(psz == 0x%32x)"% psz);
+        print("assert(pmx == 0x%32x)"% pmx);
 
     # lowest bit of the scalar is always 0, so no need to swap back
     return psx * pow(sz, P-2, P) % P
