@@ -24,7 +24,7 @@ module curve25519(input wire clock, start,
     femul femul(clock, mul_start, r[mul1], mul_snd, mul_ready, mul_done, mul_out);
 
     reg [1:0] state = 3; localparam PREPARE=0, MAINLOOP=1, INVERT=2, FINAL=3;
-    reg [7:0] i = 254; // mainloop: iteration number / index into n [254..0]
+    reg [7:0] i = 254; // mainloop: index into n; invert: index into P
     reg [3:0] stage = 0; // mainloop: process counter in iteration
     reg inv_square = 0;
 
