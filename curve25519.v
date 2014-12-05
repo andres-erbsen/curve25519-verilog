@@ -7,7 +7,7 @@
 module curve25519(input wire clock, start,
                   input wire [254:0] n, // scalar
                   input wire [254:0] q, // point
-                  output reg done = 0,
+                  output wire done,
                   output wire [254:0] out);
     reg [254:0] r[0:6];
     localparam PSX=0, SX=1, SZ=2, MX=3, MZ=4, PMX=5, PSZ=6;
@@ -27,6 +27,8 @@ module curve25519(input wire clock, start,
     reg [7:0] i = 254; // mainloop: index into n; invert: index into P
     reg [3:0] stage = 0; // mainloop: process counter in iteration
     reg inv_square = 0;
+    reg internalDone = 0;
+    assign done = internalDone && !start;
 
     always @(posedge clock) begin
         if (start) begin
@@ -41,6 +43,7 @@ module curve25519(input wire clock, start,
             add2 <= MZ;
             add_start <= 1;
             state <= PREPARE;
+            internalDone <= 0;
         end
         if (state == PREPARE && add_done) begin
             state <= MAINLOOP;
@@ -167,7 +170,7 @@ module curve25519(input wire clock, start,
         end
         if (state == FINAL && mul_done) begin
             r[OUT] <= mul_out;
-            done <= 1;
+            internalDone <= 1;
         end
         if (add_start) add_start <= 0;
         if (sub_start) sub_start <= 0;
