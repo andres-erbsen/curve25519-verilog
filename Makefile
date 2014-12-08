@@ -1,7 +1,7 @@
 test: tests.out
 	@cat tests.out && ! grep -q FAIL tests.out
 
-TESTS := feadd_test.out feexp_test.out femul_test.out fesub_test.out curve25519_test.out dh_test.out
+TESTS := feadd_test.out feexp_test.out femul_test.out fesub_test.out curve25519_test.out curve25519_mock_test.out dh_test.out
 feexp_test.vvp: feexp.v femul.v feexp_test.v
 curve25519_test.vvp: feadd.v femul.v curve25519.v curve25519_test.v
 dh_test.vvp: feadd.v femul.v curve25519.v dh_test.v

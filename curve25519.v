@@ -14,9 +14,9 @@ module curve25519(input wire clock, start,
     localparam A_MINUS_FOUR_OVER_TWO=7, Q=8, OUT=6 /* aliases PSZ */;
     localparam P_MINUS_TWO = (256'b1<<255) - 21;
     assign out = r[OUT];
+    reg [3:0] add1=0, add2=0, mul1=0, mul2=0;
     wire [254:0] mul_snd = mul2 == 8 ? q : mul2 == 7 ? 121665 : r[mul2];
     reg add_start=0, sub_start=0, mul_start=0;
-    reg [$bits(Q):0] add1=0, add2=0, mul1=0, mul2=0;
     wire add_done, sub_done, mul_ready, mul_done;
     wire [254:0] add_out, sub_out, mul_out;
     feadd feadd(clock, add_start, r[add1], r[add2], add_done, add_out);
@@ -117,7 +117,7 @@ module curve25519(input wire clock, start,
         if (state == MAINLOOP && stage == 8 && mul_done) begin
             r[MZ] <= mul_out;
             stage <= 9;
-            mul_start <= 1; mul1 <= MZ; mul2 = Q;
+            mul_start <= 1; mul1 <= MZ; mul2 <= Q;
         end
         if (state == MAINLOOP && stage == 9 && mul_done) begin
             r[PSX] <= r[SX];
