@@ -2,11 +2,13 @@
 `define assert(condition) if(!((|{condition})===1)) begin $display("FAIL"); $finish(1); end
 
 module curve25519_test;
-    reg [254:0] a, b, A, B, shared_a, shared_b, base=9;
+    reg [254:0] a_seed, b_seed, a, b, A, B, shared_a, shared_b, base=9;
 
     initial begin
-        a={$random, $random, $random, $random, $random, $random, $random, $random};
-        b={$random, $random, $random, $random, $random, $random, $random, $random};
+        a_seed={$random, $random, $random, $random, $random, $random, $random, $random};
+        b_seed={$random, $random, $random, $random, $random, $random, $random, $random};
+        a={1'b1, a_seed[3 +: 251], 3'b000};
+        b={1'b1, b_seed[3 +: 251], 3'b000};
         $display("a = 0x%x", a);
         $display("b = 0x%x", b);
     end
