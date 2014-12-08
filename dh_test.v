@@ -5,10 +5,12 @@ module curve25519_test;
     reg [254:0] a_seed, b_seed, a, b, A, B, shared_a, shared_b, base=9;
 
     initial begin
-        a_seed={$random, $random, $random, $random, $random, $random, $random, $random};
-        b_seed={$random, $random, $random, $random, $random, $random, $random, $random};
-        a={1'b1, a_seed[3 +: 251], 3'b000};
-        b={1'b1, b_seed[3 +: 251], 3'b000};
+        // a_seed={$random, $random, $random, $random, $random, $random, $random, $random};
+        // b_seed={$random, $random, $random, $random, $random, $random, $random, $random};
+        // a={1'b1, a_seed[3 +: 251], 3'b000};
+        // b={1'b1, b_seed[3 +: 251], 3'b000};
+        a=255'h49375212b2c2846546df998d06b97b0db1f056638484d609c0895e8112153520;
+        b=255'h633724c67cfde9f9462df78c76d457ed1e8dcd3d3b23f17606d7cd0d00f3e300;
         $display("a = 0x%x", a);
         $display("b = 0x%x", b);
     end
